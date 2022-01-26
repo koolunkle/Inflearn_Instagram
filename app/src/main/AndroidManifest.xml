@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".navigation.CommentActivity"
+            android:exported="true" />
+        <activity
             android:name=".navigation.AddPhotoActivity"
             android:exported="true" />
         <activity
