@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.inflearn.instagramcopy.navigation.CommentActivity
+import com.inflearn.instagramcopy.navigation.model.AlarmDTO
 import com.inflearn.instagramcopy.navigation.model.ContentDTO
 import kotlinx.android.synthetic.main.fragment_detail_view.view.*
 import kotlinx.android.synthetic.main.item_detail_view.view.*
@@ -120,6 +121,7 @@ class DetailViewFragment : Fragment() {
             viewholder.detailViewItem_comment_imageView.setOnClickListener { holder ->
                 var intent = Intent(holder.context, CommentActivity::class.java)
                 intent.putExtra("contentUid", contentUidList[position])
+                intent.putExtra("destinationUid", contentDTOs[position].uid)
                 startActivity(intent)
             }
 
@@ -140,7 +142,7 @@ class DetailViewFragment : Fragment() {
 //                    When the button is clicked
                     contentDTO?.favoriteCount = contentDTO?.favoriteCount - 1
                     contentDTO?.favorites.remove(uid)
-
+                    favoriteAlarm(contentDTOs[position].uid!!)
                 } else {
 //                    When the button is not clicked
                     contentDTO?.favoriteCount = contentDTO?.favoriteCount + 1
@@ -148,6 +150,17 @@ class DetailViewFragment : Fragment() {
                 }
                 transaction.set(tsDoc, contentDTO)
             }
+        }
+
+        fun favoriteAlarm(destinationUid: String) {
+            var alarmDTO = AlarmDTO()
+            alarmDTO.destinationUid = destinationUid
+            alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+            alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+            alarmDTO.kind = 0
+            alarmDTO.timestamp = System.currentTimeMillis()
+
+            FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
         }
 
     }

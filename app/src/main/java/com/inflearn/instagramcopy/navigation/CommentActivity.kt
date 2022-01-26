@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.inflearn.instagramcopy.R
+import com.inflearn.instagramcopy.navigation.model.AlarmDTO
 import com.inflearn.instagramcopy.navigation.model.ContentDTO
 import kotlinx.android.synthetic.main.activity_comment.*
 import kotlinx.android.synthetic.main.item_comment.view.*
@@ -20,11 +21,14 @@ class CommentActivity : AppCompatActivity() {
 
     var contentUid: String? = null
 
+    var destinationUid: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment)
 
         contentUid = intent.getStringExtra("contentUid")
+        destinationUid = intent.getStringExtra("destinationUid")
 
         comment_recyclerView.adapter = CommentRecyclerViewAdapter()
         comment_recyclerView.layoutManager = LinearLayoutManager(this)
@@ -40,7 +44,19 @@ class CommentActivity : AppCompatActivity() {
                 .collection("comments").document().set(comment)
 
             comment_edit_message.setText("")
+            commentAlarm(destinationUid!!, comment_edit_message.text.toString())
         }
+    }
+
+    fun commentAlarm(destinationUid: String, message: String) {
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+        alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+        alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.message = message
+
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
     }
 
     inner class CommentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
