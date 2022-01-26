@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.inflearn.instagramcopy.navigation.CommentActivity
 import com.inflearn.instagramcopy.navigation.model.AlarmDTO
 import com.inflearn.instagramcopy.navigation.model.ContentDTO
+import com.inflearn.instagramcopy.navigation.util.FCMPush
 import kotlinx.android.synthetic.main.fragment_detail_view.view.*
 import kotlinx.android.synthetic.main.item_detail_view.view.*
 
@@ -161,6 +162,10 @@ class DetailViewFragment : Fragment() {
             alarmDTO.timestamp = System.currentTimeMillis()
 
             FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+            var message =
+                FirebaseAuth.getInstance()?.currentUser?.email + getString(R.string.alarm_favorite)
+            FCMPush.instance.sendMessage(destinationUid, "InstagramCopy", message)
         }
 
     }

@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.inflearn.instagramcopy.R
 import com.inflearn.instagramcopy.navigation.model.AlarmDTO
 import com.inflearn.instagramcopy.navigation.model.ContentDTO
+import com.inflearn.instagramcopy.navigation.util.FCMPush
 import kotlinx.android.synthetic.main.activity_comment.*
 import kotlinx.android.synthetic.main.item_comment.view.*
 
@@ -58,6 +59,10 @@ class CommentActivity : AppCompatActivity() {
         alarmDTO.message = message
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var msg =
+            FirebaseAuth.getInstance().currentUser?.email + " " + getString(R.string.alarm_comment) + " of " + message
+        FCMPush.instance.sendMessage(destinationUid, "InstagramCopy", msg)
     }
 
     inner class CommentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.inflearn.instagramcopy.navigation.model.AlarmDTO
 import com.inflearn.instagramcopy.navigation.model.ContentDTO
 import com.inflearn.instagramcopy.navigation.model.FollowDTO
+import com.inflearn.instagramcopy.navigation.util.FCMPush
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
@@ -185,6 +186,9 @@ class UserFragment : Fragment() {
         alarmDTO.timestamp = System.currentTimeMillis()
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var message = auth?.currentUser?.email + getString(R.string.alarm_follow)
+        FCMPush.instance.sendMessage(destinationUid, "InstagramCopy", message)
     }
 
     fun getProfileImage() {

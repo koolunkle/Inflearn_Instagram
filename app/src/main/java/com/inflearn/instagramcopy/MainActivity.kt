@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.inflearn.instagramcopy.navigation.AddPhotoActivity
@@ -34,6 +35,23 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 //        Set default screen
         bottom_navigation.selectedItemId = R.id.action_home
+
+        registerPushToken()
+    }
+
+    /* override fun onStop() {
+        super.onStop()
+        FCMPush.instance.sendMessage("1LJDZ1dwG5MQDNQbqR2zMSoJ4tI3", "Hi", "Bye")
+    } */
+
+    fun registerPushToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            val token = task.result ?: ""
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            val map = mutableMapOf<String, Any>()
+            map["pushToken"] = token!!
+            FirebaseFirestore.getInstance().collection("pushTokens").document(uid!!).set(map)
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
