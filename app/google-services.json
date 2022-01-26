@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "684435037531",
+    "project_id": "instagramcopy-58a57",
+    "storage_bucket": "instagramcopy-58a57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684435037531:android:3b885e1f756d3493f00e7e",
+        "android_client_info": {
+          "package_name": "com.inflearn.instagramcopy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684435037531-2i97j2sqdfm179o2aaag7gp63nkdnkfv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwSY8i9yAHewd5S1v6X5EkWB-J6V11Je0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684435037531-2i97j2sqdfm179o2aaag7gp63nkdnkfv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
