@@ -67,6 +67,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        moveMainInPage(auth?.currentUser)
+    }
+
     fun printHashKey() {
         try {
             val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
@@ -184,6 +189,7 @@ class LoginActivity : AppCompatActivity() {
     fun moveMainInPage(user: FirebaseUser?) {
         if (user != null) {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 
